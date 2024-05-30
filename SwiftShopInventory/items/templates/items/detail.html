@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{item.name}}{% endblock%}
+
+
+{% block content %}
+<div class = "grid grid-cols-5 gap-6">
+    <div class="col-span-3">
+        <img  src = "{{item.image.url}}" class = "p-10 rounded-xl">
+    </div>
+    <div class="col-span-2">
+        <h1 class = "text-3xl font-bold">{{item.name}}</h1>
+        <p class = "text-xl font-semibold text-gray-500">{{item.category}}</p>
+        <p class = "text-xl font-semibold text-gray-500">Price: {{item.price}} RM</p>
+        <p class = "text-xl font-semibold text-gray-500">Stock: {{item.stock}}</p>
+        
+        {% if item.description %}
+            <p class = "text-xl font-semibold text-gray-500">Description: {{item.description}}</p>
+        {% endif %}
+
+        {% if request.user == item.created_by %}
+            <a href = "#" class = "mt-6 block w-1/4 px-4 py-2 text-center text-white bg-blue-500 rounded-xl">Edit</a>
+            <a href = "#" class = "mt-6 block w-1/4 px-4 py-2 text-center text-white bg-red-500 rounded-xl">Delete</a>
+        {% else %}
+            <a href = "#" class = "mt-6 block w-1/4 px-4 py-2 text-center text-white bg-blue-500 rounded-xl">Request Restock</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class = "mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+    <h2 class = "mb-12 text-2xl text-center">Related Items</h2>
+    <div class = "grid grid-cols-3 gap-3">
+        {% for item in related_items %}
+        <div>
+            <a href = "{% url 'item:detail' item.id %}">
+                <div>
+                    <img src = "{{item.image.url}}" class = "rounded-xl">
+                </div>
+                <div class = "p-6 bg-white rounded-b-xl">
+                    <h2 class = "text-2xl">{{item.name}}</h2>
+                    <p class = "text-gray-500">Price: {{item.price}}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
